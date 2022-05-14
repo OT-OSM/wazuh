@@ -1,0 +1,32 @@
+---
+# tasks file for wazuh
+
+#- name: Including playbook for Wazuh OS configurations
+#  include_tasks: Pre-requisites.yml
+#
+#- name: Including playbook for Wazuh installing & configuring
+#  include_tasks: Wazuh_server.yml
+
+- name: Including playbook for removing old certificates and generating new one
+  include_tasks: Certificate.yml
+
+- name: Including playbook to install and configure elasticsearch and opendistro
+  include_tasks: ElasticserachAndOpendisto.yml
+
+- name: Including playbook to install and configure Filebeat
+  include_tasks: Filebeat.yml
+
+- name: Including playbook to install and configure Kibana
+  include_tasks: Kibana.yml
+
+
+
+
+
+
+
+
+
+
+
+

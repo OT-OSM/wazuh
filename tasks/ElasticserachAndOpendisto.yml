@@ -1,0 +1,72 @@
+- name: Install Elasticsearch OSS and Open Distro for Elasticsearch
+  apt:
+    update_cache: "yes"
+    name: ['elasticsearch-oss', 'opendistroforelasticsearch']
+    state: present
+
+- name: Configuration elasticsearch
+  template:
+    src: "{{ item.Source }}"
+    dest: "{{ item.destination }}"
+  become: true
+  loop: "{{ AddingTemplatedToConfigureElasticserach }}"
+
+- name: Remove the demo certificates that was by default genearted
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ EsConfigPath }}/esnode-key.pem"
+    - "{{ EsConfigPath }}/esnode.pem"
+    - "{{ EsConfigPath }}/kirk-key.pem"
+    - "{{ EsConfigPath }}/kirk.pem"
+    - "{{ EsConfigPath }}/root-ca.pem"
+
+
+- name: Creating required directory
+  file:
+    path: "{{ item }}"
+    state: directory
+    recurse: yes
+  with_items:
+    - "{{ EsConfigPath }}/certs"
+    - "{{ EsConfigPath }}/jvm.options.d"
+
+- name: Copying certificates
+  copy:
+    src: "{{ item }}"
+    dest: "{{ EsConfigPath }}/certs/"
+    remote_src: yes
+  with_items:
+    - "{{ CertificatePath }}/elasticsearch-key.pem"
+    - "{{ CertificatePath }}/elasticsearch.pem"
+    - "{{ CertificatePath }}/admin-key.pem"
+    - "{{ CertificatePath }}/admin.pem"
+    - "{{ CertificatePath }}/root-ca.pem"
+    - "{{ CertificatePath }}/root-ca.key"
+
+- name: Copying the configuration to disable the logs
+  template:
+    src: disabledlog4j.options.j2
+    dest: "{{ EsConfigPath }}/jvm.options.d/disabledlog4j.options"
+    owner: "{{ RootUser }}"
+    group: "{{ EsUser }}"
+    mode: '2750'
+
+- name: ElasticsearchServiceStartEnableAndReload
+  systemd:
+    name: elasticsearch
+    daemon_reload: yes
+    enabled: yes
+    state: started
+
+- name: Loading the new certificates
+  shell: export JAVA_HOME=/usr/share/elasticsearch/jdk/ && /usr/share/elasticsearch/plugins/opendistro_security/tools/securityadmin.sh -cd /usr/share/elasticsearch/plugins/opendistro_security/securityconfig/ -nhnv -cacert {{ EsConfigPath }}/certs/root-ca.pem -cert {{ EsConfigPath }}/certs/admin.pem -key {{ EsConfigPath }}/certs/admin-key.pem
+
+- name: Checking the configuration 
+  command: curl -XGET https://localhost:9200 -u admin:admin -k
+  register: output
+
+- name: Priting the output of elasticsearch 
+  debug:
+    msg: "{{ output.stdout }}"

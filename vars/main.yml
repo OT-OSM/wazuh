@@ -1,0 +1,12 @@
+---
+# vars file for wazuh
+
+SecurityScriptName: wazuh-cert-tool.sh
+
+CertificatePath: ~/certs
+
+FilebeatModulePath: /usr/share/filebeat/module
+
+KibanaBinaryPath: /usr/share/kibana
+
+WazuhVersion: 4.2.6-1

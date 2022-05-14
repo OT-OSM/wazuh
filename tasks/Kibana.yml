@@ -1,0 +1,49 @@
+- name: Install the Kibana package
+  apt:
+    name: opendistroforelasticsearch-kibana
+    state: present
+
+- name: Configuring kibana
+  template:
+    src: kibana.yml.j2
+    dest: "{{ KibanaConfigPath }}/kibana.yml"
+  become: true
+
+- name: creating directory
+  file:
+    path: "{{ KibanaBinaryPath }}/data"
+    state: directory
+    owner: "{{ KibanaUser }}"
+    group: "{{ KibanaUser }}"
+    recurse: yes
+
+- name: Change the working directory to somedir/ before executing the command
+  shell: "sudo -u kibana {{ KibanaBinaryPath }}/bin/kibana-plugin install https://packages.wazuh.com/4.x/ui/kibana/wazuh_kibana-4.2.6_7.10.2-1.zip"
+  args:
+    chdir: "{{ KibanaBinaryPath }}"
+
+- name: Creating directory for certificates
+  file:
+    path: "{{ KibanaConfigPath }}/certs"
+    state: directory
+    recurse: yes
+
+- name: Copying the required certificates to kibana
+  copy:
+    src: "{{ item }}"
+    dest: "{{ KibanaConfigPath }}/certs/"
+    owner: "{{ KibanaUser }}"
+    group: "{{ KibanaUser }}"
+    remote_src: yes
+  with_items:
+    - "{{ CertificatePath }}/kibana-key.pem"
+    - "{{ CertificatePath }}/kibana.pem"
+    - "{{ CertificatePath }}/root-ca.pem"
+
+- name: Specified filename to the capabilities specified
+  community.general.capabilities:
+    path: "{{ KibanaBinaryPath }}/node/bin/node"
+    capability: cap_net_bind_service=+ep
+    state: present  
+  notify: 
+    - KibanaServiceStartEnableAndReload
