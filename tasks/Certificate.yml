@@ -12,7 +12,6 @@
     src: "{{ item.Source }}"
     dest: "{{ item.destination }}"
     force: yes
-  become: true
   loop: "{{ AddingTemplatedForCertificates }}"
 
 - name: Generating certificates by executing script

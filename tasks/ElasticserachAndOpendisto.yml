@@ -8,7 +8,6 @@
   template:
     src: "{{ item.Source }}"
     dest: "{{ item.destination }}"
-  become: true
   loop: "{{ AddingTemplatedToConfigureElasticserach }}"
 
 - name: Remove the demo certificates that was by default genearted
@@ -21,7 +20,6 @@
     - "{{ EsConfigPath }}/kirk-key.pem"
     - "{{ EsConfigPath }}/kirk.pem"
     - "{{ EsConfigPath }}/root-ca.pem"
-
 
 - name: Creating required directory
   file:

@@ -1,24 +1,29 @@
 - name: Install the GPG key for wazuh
   apt_key:
-    url: https://packages.wazuh.com/key/GPG-KEY-WAZUH
+    url: "{{ WazuhKeyUrl }}"
     state: present
 
 - name: Adding wazuh repository
   apt_repository:
-    repo: deb https://packages.wazuh.com/4.x/apt/ stable main
+    repo: "{{ WazuhRepoUrl }}"
     state: present
 
 - name: Updating apt cache for repo
   apt:
     update_cache: yes
 
-- name: Installing wazuh-manager version 4.2.6-1
+- name: Installing wazuh-manager 
   apt:
-    name: wazuh-manager={{ WazuhVersion }}
+    name: wazuh-manager={{ WazuhVersion }}-1
     state: present
+
+- name: Configuration wazuh
+  template:
+    src: ossec.conf.j2
+    dest: "{{ WazuhConfigPath }}"
   
 - name: WazuhServiceStartEnableAndReload
-  ansible.builtin.systemd:
+  systemd:
     name: wazuh-manager
     daemon_reload: yes
     enabled: yes

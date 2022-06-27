@@ -9,12 +9,11 @@
     src: "{{ item.Source }}"
     dest: "{{ item.destination }}"
     mode: '0744'
-  become: true
   loop: "{{ AddingTemplatedToConfigureFilebeat }}"
 
 - name: Unarchive a filebeat modules
   unarchive:
-    src: https://packages.wazuh.com/4.x/filebeat/wazuh-filebeat-0.1.tar.gz
+    src: "{{ FileBeatSourceUrl }}"
     dest: "{{ FilebeatModulePath }}"
     remote_src: yes
 

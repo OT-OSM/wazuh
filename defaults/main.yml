@@ -16,13 +16,17 @@ AddingTemplatedToConfigureFilebeat:
     - { Source: "wazuh-template.json.j2", destination: "/etc/filebeat/wazuh-template.json" }
 
 EsConfigPath: /etc/elasticsearch
-
 RootUser: root
-
 EsUser: elasticsearch
-
-KibanaUser: kibana
+EsCertificatePath: /etc/elasticsearch/certs
 
 FilebeatConfigPath: /etc/filebeat
+FileBeatCertificatePath: /etc/filebeat/certs
 
 KibanaConfigPath: /etc/kibana
+KibanaUser: kibana
+
+WazuhConfigPath: /var/ossec/etc/ossec.conf
+
+UserName: admin
+UserPassword: admin

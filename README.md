@@ -1,38 +1,71 @@
-Role Name
-=========
+## Ansible Role: Wazuh-Manager
 
-A brief description of the role goes here.
+Ansible role to setup, manage Wazuh -Manager standalone
 
-Requirements
-------------
+Some of the highlighting features are:-
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+  - Standalone setup of Wazuh-manager
+  - Slack setup for alert management
+ 
 
-Role Variables
---------------
+### Supported OS
+- Ubuntu 18 
+- Ubuntu 20
+- Ubuntu 22
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+### Requirements
 
-Dependencies
-------------
+**No third party requirement is needed by this role**
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+### Roles Variables
 
-Example Playbook
-----------------
+Roles variables are categorized into two divisions i.e. Mandatory and Optional.
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+#### Mandatory Variables
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+|**Variables**|**Default Values**|**Possible Values**|**Type**|**Description**|
+|-------------|------------------|-------------------|--------|---------------|
+| UbuntuVersion | 20.04 |<ul><li>18.04</li><li>20.04</li><li>22.04</li></ul>  | string | Username for rabbitmq setup |
 
-License
--------
 
-BSD
+#### Optional Variables
 
-Author Information
-------------------
+|**Variables**|**Default Values**|**Possible Values**|**Type**|**Description**|
+|-------------|------------------|-------------------|--------|---------------|
+| WazuhVersion | 4.3.0 | *Wazuh Version* | string | Default Version of wazuh |
+| Slack | false | <ul><li>true</li><li>false</li></ul> | boolean | To configure Slack in our wazuh manager |
+| SlackWebhook | None | webhook String | String | Mandatory value if Slack Variable value is true |
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+
+### Usage
+
+The inventory for rabbitmq role should look like this:-
+
+```ini
+[wazuh]
+node-1 ansible_host=13.213.39.180
+
+[wazuh:vars]
+ansible_ssh_user=ubuntu
+```
+
+
+An example playbook should look like this:-
+
+```yaml
+---
+- name: wazuh
+  hosts: all
+  become_user: root
+  roles:
+   - { role: wazuh }
+```
+
+and for running the ansible role, we will use ansible cli.
+
+```shell
+ansible-playbook -i tests/inventory tests/test.yml
+```
+## Authors
+
+**[Varghese Kurian](varghese.palamoottil@opstree.com)**
