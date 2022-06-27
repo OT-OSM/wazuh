@@ -5,7 +5,7 @@ Ansible role to setup, manage Wazuh -Manager standalone
 Some of the highlighting features are:-
 
   - Standalone setup of Wazuh-manager
-  - Slack setup for alert management
+  - Setup Slack for alert management
  
 
 ### Supported OS
@@ -25,7 +25,7 @@ Roles variables are categorized into two divisions i.e. Mandatory and Optional.
 
 |**Variables**|**Default Values**|**Possible Values**|**Type**|**Description**|
 |-------------|------------------|-------------------|--------|---------------|
-| UbuntuVersion | 20.04 |<ul><li>18.04</li><li>20.04</li><li>22.04</li></ul>  | string | Username for rabbitmq setup |
+| UbuntuVersion | 20.04 |<ul><li>18.04</li><li>20.04</li><li>22.04</li></ul>  | string | Operating system name and version |
 
 
 #### Optional Variables
@@ -39,7 +39,7 @@ Roles variables are categorized into two divisions i.e. Mandatory and Optional.
 
 ### Usage
 
-The inventory for rabbitmq role should look like this:-
+The inventory for wazuh_manager role should look like this:-
 
 ```ini
 [wazuh]
