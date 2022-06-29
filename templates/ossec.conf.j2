@@ -336,7 +336,7 @@
     <disabled>yes</disabled>
   </cluster>
   
-{% if Slack == 'true' -%}
+{% if Slack == true %}
   <integration>
     <name>slack</name>
     <hook_url>{{ SlackWebhook }}</hook_url>
@@ -344,6 +344,7 @@
      <max_log>1024</max_log>
     <alert_format>json</alert_format>
   </integration>
+  
 {% endif -%}
 
 </ossec_config>
