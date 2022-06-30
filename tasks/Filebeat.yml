@@ -9,7 +9,7 @@
     src: "{{ item.Source }}"
     dest: "{{ item.destination }}"
     mode: '0744'
-  loop: "{{ AddingTemplatedToConfigureFilebeat }}"
+  loop: "{{ ConfigureFilebeat }}"
 
 - name: Unarchive a filebeat modules
   unarchive:

@@ -1,17 +1,13 @@
 ---
 # defaults file for wazuh
 
-AddingTemplatedForCertificates: 
-    - { Source: "templates/wazuh-cert-tool.sh", destination: "~/wazuh-cert-tool.sh" }
-    - { Source: "templates/instances.yml", destination: "~/instances.yml" }
-
-AddingTemplatedToConfigureElasticserach:
+ConfigureElasticserach:
     - { Source: "elasticsearch.yml.j2", destination: "{{ EsConfigPath }}/elasticsearch.yml" }
     - { Source: "roles.yml.j2", destination: "/usr/share/elasticsearch/plugins/opendistro_security/securityconfig/roles.yml" }
     - { Source: "roles_mapping.yml.j2", destination: "/usr/share/elasticsearch/plugins/opendistro_security/securityconfig/roles_mapping.yml" }
     - { Source: "internal_users.yml.j2", destination: "/usr/share/elasticsearch/plugins/opendistro_security/securityconfig/internal_users.yml" }
 
-AddingTemplatedToConfigureFilebeat:
+ConfigureFilebeat:
     - { Source: "filebeat.yml.j2", destination: "/etc/filebeat/filebeat.yml" }
     - { Source: "wazuh-template.json.j2", destination: "/etc/filebeat/wazuh-template.json" }
 

@@ -1,5 +1,5 @@
 <!--
-  Wazuh - Manager - Default configuration for ubuntu {{ UbuntuVersion }}
+  Wazuh - Manager - Default configuration for ubuntu {{ ansible_distribution_version}}
   More info at: https://documentation.wazuh.com
   Mailing list: https://groups.google.com/forum/#!forum/wazuh
 -->
@@ -336,7 +336,7 @@
     <disabled>yes</disabled>
   </cluster>
   
-{% if Slack == true %}
+{% if EnableSlack == true -%}
   <integration>
     <name>slack</name>
     <hook_url>{{ SlackWebhook }}</hook_url>

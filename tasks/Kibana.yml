@@ -17,7 +17,7 @@
     recurse: yes
 
 - name: Change the working directory to somedir/ before executing the command
-  shell: "sudo -u kibana {{ KibanaBinaryPath }}/bin/kibana-plugin install https://packages.wazuh.com/4.x/ui/kibana/wazuh_kibana-{{ WazuhVersion }}_7.10.2-1.zip"
+  shell: "sudo -u kibana {{ KibanaBinaryPath }}/bin/kibana-plugin install https://packages.wazuh.com/4.x/ui/kibana/wazuh_kibana-{{ WazuhVersion }}_{{ ESVersion }}-1.zip"
   args:
     chdir: "{{ KibanaBinaryPath }}"
 
