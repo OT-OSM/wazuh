@@ -2,7 +2,7 @@
 - name: Copying the file from template to genearte certificates
   copy:
     src: "{{ item }}"
-    dest: ~/
+    dest: "{{ CertificateScriptPath }}"
     force: yes
   with_items:
     - wazuh-cert-tool.sh
@@ -12,4 +12,4 @@
 - name: Generating certificates by executing script
   shell: bash wazuh-cert-tool.sh
   args:
-    chdir: ~/
+    chdir: "{{ CertificateScriptPath }}"

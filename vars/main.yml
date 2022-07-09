@@ -1,7 +1,7 @@
 ---
 # vars file for wazuh
 
-CertificatePath: ~/certs
+CertificatePath: "{{ CertificateScriptPath }}certs"
 
 KibanaBinaryPath: /usr/share/kibana
 KibanaServerHost: 0.0.0.0
@@ -10,6 +10,9 @@ KibanaCertificatePath: /etc/kibana/certs
 
 ElasticsearchUsername: kibanaserver
 ElasticsearchPassword: kibanaserver
+EsPathData: /var/lib/elasticsearch
+EsPathLog: /var/log/elasticsearch
+ESPort: 9200
 
 WazuhVersion: 4.3.4
 
@@ -21,9 +24,7 @@ FilebeatModulePath: /usr/share/filebeat/module
 WazuhKeyUrl: https://packages.wazuh.com/key/GPG-KEY-WAZUH
 WazuhRepoUrl: deb https://packages.wazuh.com/4.x/apt/ stable main
 
-EsPathData: /var/lib/elasticsearch
-EsPathLog: /var/log/elasticsearch
-
 EnableSlack: false
 SlackWebhook:
 
+CertificateScriptPath: /opt/

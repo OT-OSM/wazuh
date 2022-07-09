@@ -26,6 +26,8 @@ Some of the highlighting features are:-
 | WazuhVersion | 4.3.0 | *Wazuh Version* | string | Default Version of wazuh |
 | EnableSlack | false | <ul><li>true</li><li>false</li></ul> | boolean | To configure Slack in our wazuh manager |
 | SlackWebhook | None | webhook String | String | Mandatory value if Slack Variable value is true |
+| ESPort | 9200 | *Elasticsearch port* | String | Default port of elasticsearch |
+| CertificateScriptPath | /opt/ | *PWD* | String | Path were to load certificates |
 
 
 ### Usage

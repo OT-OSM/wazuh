@@ -61,16 +61,16 @@
 - name: certificate Loading script
   copy:
     src: load.sh
-    dest: ~/
+    dest: "{{ CertificateScriptPath }}"
     force: yes
 
 - name: Loading the new certificates
   shell: bash load.sh
   args:
-    chdir: ~/
+    chdir: "{{ CertificateScriptPath }}"
 
 - name: Checking the configuration 
-  command: curl -XGET https://localhost:9200 -u admin:admin -k
+  command: "curl -XGET https://localhost:{{ ESPort }} -u admin:admin -k"
   register: output
 
 - name: Priting the output of elasticsearch 

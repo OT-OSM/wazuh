@@ -11,7 +11,7 @@
   include_tasks: Certificate.yml
 
 - name: Including playbook to install and configure elasticsearch and opendistro
-  include_tasks: ElasticserachAndOpendisto.yml
+  include_tasks: ElasticserachAndOpendistro.yml
 
 - name: Including playbook to install and configure Filebeat
   include_tasks: Filebeat.yml
