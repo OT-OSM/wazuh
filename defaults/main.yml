@@ -1,32 +1,34 @@
 ---
 # defaults file for wazuh
 
-AddingTemplatedForCertificates: 
-    - { Source: "templates/wazuh-cert-tool.sh", destination: "~/wazuh-cert-tool.sh" }
-    - { Source: "templates/instances.yml", destination: "~/instances.yml" }
+ConfigureElasticserach:
+ - {Source: "elasticsearch.yml.j2", destination: "{{ EsConfigPath }}/elasticsearch.yml"}
+ - {Source: "roles.yml.j2", destination: "{{ ESSecurityPath }}/roles.yml"}
+ - {Source: "roles_mapping.yml.j2", destination: "{{ ESSecurityPath }}/roles_mapping.yml"}
+ - {Source: "internal_users.yml.j2", destination: "{{ ESSecurityPath }}/internal_users.yml"}
 
-AddingTemplatedToConfigureElasticserach:
-    - { Source: "elasticsearch.yml.j2", destination: "{{ EsConfigPath }}/elasticsearch.yml" }
-    - { Source: "roles.yml.j2", destination: "/usr/share/elasticsearch/plugins/opendistro_security/securityconfig/roles.yml" }
-    - { Source: "roles_mapping.yml.j2", destination: "/usr/share/elasticsearch/plugins/opendistro_security/securityconfig/roles_mapping.yml" }
-    - { Source: "internal_users.yml.j2", destination: "/usr/share/elasticsearch/plugins/opendistro_security/securityconfig/internal_users.yml" }
-
-AddingTemplatedToConfigureFilebeat:
-    - { Source: "filebeat.yml.j2", destination: "/etc/filebeat/filebeat.yml" }
-    - { Source: "wazuh-template.json.j2", destination: "/etc/filebeat/wazuh-template.json" }
+ConfigureFilebeat:
+ - {Source: "filebeat.yml.j2", destination: "{{ FilebeatConfigPath }}/filebeat.yml"}
+ - {Source: "wazuh-template.json.j2", destination: "{{ FilebeatConfigPath }}/wazuh-template.json"}
 
 EsConfigPath: /etc/elasticsearch
 RootUser: root
 EsUser: elasticsearch
 EsCertificatePath: /etc/elasticsearch/certs
+EsPathData: /var/lib/elasticsearch
+EsPathLog: /var/log/elasticsearch
 
+FileBeatBaseUrl: https://packages.wazuh.com/4.x/filebeat/
 FilebeatConfigPath: /etc/filebeat
 FileBeatCertificatePath: /etc/filebeat/certs
 
 KibanaConfigPath: /etc/kibana
 KibanaUser: kibana
+KibanaCertificatePath: /etc/kibana/certs
 
 WazuhConfigPath: /var/ossec/etc/ossec.conf
 
 UserName: admin
 UserPassword: admin
+
+CertificatePath: "{{ CertificateScriptPath }}certs"

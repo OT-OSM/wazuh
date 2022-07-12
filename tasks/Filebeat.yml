@@ -1,4 +1,4 @@
-
+---
 - name: Install the Filebeat package
   apt:
     name: filebeat
@@ -9,13 +9,13 @@
     src: "{{ item.Source }}"
     dest: "{{ item.destination }}"
     mode: '0744'
-  loop: "{{ AddingTemplatedToConfigureFilebeat }}"
+  loop: "{{ ConfigureFilebeat }}"
 
 - name: Unarchive a filebeat modules
   unarchive:
     src: "{{ FileBeatSourceUrl }}"
     dest: "{{ FilebeatModulePath }}"
-    remote_src: yes
+    remote_src: true
 
 - name: Creating directory
   file:
@@ -26,18 +26,15 @@
   copy:
     src: "{{ item }}"
     dest: "{{ FilebeatConfigPath }}/certs/"
-    remote_src: yes
+    remote_src: true
   with_items:
     - "{{ CertificatePath }}/filebeat-key.pem"
     - "{{ CertificatePath }}/filebeat.pem"
     - "{{ CertificatePath }}/root-ca.pem"
+  notify: FilebeatServiceStartEnableAndReload
 
-- name: FilebeatServiceStartEnableAndReload
-  systemd:
-    name: filebeat
-    daemon_reload: yes
-    enabled: yes
-    state: started  
+- name: Running all handlers
+  meta: flush_handlers
 
 - name: Testing the configueration
   command: filebeat test output

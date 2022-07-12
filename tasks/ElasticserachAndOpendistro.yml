@@ -1,3 +1,4 @@
+---
 - name: Install Elasticsearch OSS and Open Distro for Elasticsearch
   apt:
     update_cache: "yes"
@@ -8,7 +9,7 @@
   template:
     src: "{{ item.Source }}"
     dest: "{{ item.destination }}"
-  loop: "{{ AddingTemplatedToConfigureElasticserach }}"
+  loop: "{{ ConfigureElasticserach }}"
 
 - name: Remove the demo certificates that was by default genearted
   file:
@@ -25,7 +26,7 @@
   file:
     path: "{{ item }}"
     state: directory
-    recurse: yes
+    recurse: true
   with_items:
     - "{{ EsConfigPath }}/certs"
     - "{{ EsConfigPath }}/jvm.options.d"
@@ -34,7 +35,7 @@
   copy:
     src: "{{ item }}"
     dest: "{{ EsConfigPath }}/certs/"
-    remote_src: yes
+    remote_src: true
   with_items:
     - "{{ CertificatePath }}/elasticsearch-key.pem"
     - "{{ CertificatePath }}/elasticsearch.pem"
@@ -50,21 +51,24 @@
     owner: "{{ RootUser }}"
     group: "{{ EsUser }}"
     mode: '2750'
+  notify: ElasticsearchServiceStartEnableAndReload
 
-- name: ElasticsearchServiceStartEnableAndReload
-  systemd:
-    name: elasticsearch
-    daemon_reload: yes
-    enabled: yes
-    state: started
+- name: Running all handlers
+  meta: flush_handlers
+
+- name: certificate Loading script
+  copy:
+    src: load.sh
+    dest: "{{ CertificateScriptPath }}"
+    force: true
 
 - name: Loading the new certificates
-  shell: export JAVA_HOME=/usr/share/elasticsearch/jdk/ && /usr/share/elasticsearch/plugins/opendistro_security/tools/securityadmin.sh -cd /usr/share/elasticsearch/plugins/opendistro_security/securityconfig/ -nhnv -cacert {{ EsConfigPath }}/certs/root-ca.pem -cert {{ EsConfigPath }}/certs/admin.pem -key {{ EsConfigPath }}/certs/admin-key.pem
+  shell: "bash {{ CertificateScriptPath }}load.sh"
 
-- name: Checking the configuration 
-  command: curl -XGET https://localhost:9200 -u admin:admin -k
+- name: Checking the configuration
+  command: "curl -XGET https://localhost:{{ ESPort }} -u admin:admin -k"
   register: output
 
-- name: Priting the output of elasticsearch 
+- name: Priting the output of elasticsearch
   debug:
     msg: "{{ output.stdout }}"
