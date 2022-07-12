@@ -39,6 +39,7 @@
 - name: Testing the configueration
   command: filebeat test output
   register: output2
+  changed_when: true
 
 - name: Printing tested output
   debug:

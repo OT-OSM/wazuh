@@ -63,11 +63,13 @@
     force: true
 
 - name: Loading the new certificates
-  shell: "bash {{ CertificateScriptPath }}load.sh"
+  command: "bash {{ CertificateScriptPath }}load.sh"
+  changed_when: true
 
 - name: Checking the configuration
   command: "curl -XGET https://localhost:{{ ESPort }} -u admin:admin -k"
   register: output
+  changed_when: true
 
 - name: Priting the output of elasticsearch
   debug:

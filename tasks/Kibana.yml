@@ -18,7 +18,8 @@
     recurse: true
 
 - name: Change the working directory to somedir/ before executing the command
-  shell: "sudo -u kibana {{ KibanaBinaryPath }}/bin/kibana-plugin install https://packages.wazuh.com/4.x/ui/kibana/wazuh_kibana-{{ WazuhVersion }}_{{ ESVersion }}-1.zip"
+  command: "sudo -u kibana {{ KibanaPluginPath }} install {{ KibanaURLPlugin }}{{ WazuhVersion }}_{{ ESVersion }}-1.zip"
+  changed_when: true
 
 - name: Creating directory for certificates
   file:
