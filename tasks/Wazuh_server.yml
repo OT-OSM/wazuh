@@ -1,3 +1,4 @@
+---
 - name: Install the GPG key for wazuh
   apt_key:
     url: "{{ WazuhKeyUrl }}"
@@ -10,9 +11,9 @@
 
 - name: Updating apt cache for repo
   apt:
-    update_cache: yes
+    update_cache: true
 
-- name: Installing wazuh-manager 
+- name: Installing wazuh-manager
   apt:
     name: wazuh-manager={{ WazuhVersion }}-1
     state: present
@@ -21,11 +22,7 @@
   template:
     src: ossec.conf.j2
     dest: "{{ WazuhConfigPath }}"
-  
-- name: WazuhServiceStartEnableAndReload
-  systemd:
-    name: wazuh-manager
-    daemon_reload: yes
-    enabled: yes
-    state: started
+  notify: WazuhServiceStartEnableAndReload
 
+- name: Running all handlers
+  meta: flush_handlers

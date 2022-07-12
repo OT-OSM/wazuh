@@ -1,24 +1,21 @@
 ---
 # vars file for wazuh
 
-CertificatePath: "{{ CertificateScriptPath }}certs"
-
 KibanaBinaryPath: /usr/share/kibana
 KibanaServerHost: 0.0.0.0
 KibanaServerPort: 443
-KibanaCertificatePath: /etc/kibana/certs
 
+ESPluginPath: /usr/share/elasticsearch/plugins
+ESSecurityPath: "{{ ESPluginPath }}/opendistro_security/securityconfig"
 ElasticsearchUsername: kibanaserver
 ElasticsearchPassword: kibanaserver
-EsPathData: /var/lib/elasticsearch
-EsPathLog: /var/log/elasticsearch
 ESPort: 9200
 
 WazuhVersion: 4.3.4
 
 ESVersion: 7.10.2
 
-FileBeatSourceUrl: https://packages.wazuh.com/4.x/filebeat/wazuh-filebeat-0.1.tar.gz
+FileBeatSourceUrl: "{{ FileBeatBaseUrl }}wazuh-filebeat-0.1.tar.gz"
 FilebeatModulePath: /usr/share/filebeat/module
 
 WazuhKeyUrl: https://packages.wazuh.com/key/GPG-KEY-WAZUH

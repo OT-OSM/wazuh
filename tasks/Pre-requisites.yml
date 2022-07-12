@@ -1,6 +1,13 @@
-
+---
 - name: Installing prerequist package
   apt:
     update_cache: "yes"
-    name: ['curl', 'gnupg', 'apt-transport-https', 'libcap2-bin', 'software-properties-common', 'lsb-release']
+    name: "{{ item }}"
     state: present
+  with_items:
+    - curl
+    - gnupg
+    - apt-transport-https
+    - libcap2-bin
+    - software-properties-common
+    - lsb-release

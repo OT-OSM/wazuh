@@ -1,3 +1,4 @@
+---
 - name: Install Elasticsearch OSS and Open Distro for Elasticsearch
   apt:
     update_cache: "yes"
@@ -25,7 +26,7 @@
   file:
     path: "{{ item }}"
     state: directory
-    recurse: yes
+    recurse: true
   with_items:
     - "{{ EsConfigPath }}/certs"
     - "{{ EsConfigPath }}/jvm.options.d"
@@ -34,7 +35,7 @@
   copy:
     src: "{{ item }}"
     dest: "{{ EsConfigPath }}/certs/"
-    remote_src: yes
+    remote_src: true
   with_items:
     - "{{ CertificatePath }}/elasticsearch-key.pem"
     - "{{ CertificatePath }}/elasticsearch.pem"
@@ -50,29 +51,24 @@
     owner: "{{ RootUser }}"
     group: "{{ EsUser }}"
     mode: '2750'
+  notify: ElasticsearchServiceStartEnableAndReload
 
-- name: ElasticsearchServiceStartEnableAndReload
-  systemd:
-    name: elasticsearch
-    daemon_reload: yes
-    enabled: yes
-    state: started
+- name: Running all handlers
+  meta: flush_handlers
 
 - name: certificate Loading script
   copy:
     src: load.sh
     dest: "{{ CertificateScriptPath }}"
-    force: yes
+    force: true
 
 - name: Loading the new certificates
-  shell: bash load.sh
-  args:
-    chdir: "{{ CertificateScriptPath }}"
+  shell: "bash {{ CertificateScriptPath }}load.sh"
 
-- name: Checking the configuration 
+- name: Checking the configuration
   command: "curl -XGET https://localhost:{{ ESPort }} -u admin:admin -k"
   register: output
 
-- name: Priting the output of elasticsearch 
+- name: Priting the output of elasticsearch
   debug:
     msg: "{{ output.stdout }}"

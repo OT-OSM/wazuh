@@ -1,9 +1,29 @@
 ---
 # handlers file for wazuh
+- name: WazuhServiceStartEnableAndReload
+  systemd:
+    name: wazuh-manager
+    daemon_reload: true
+    enabled: true
+    state: started
+
+- name: ElasticsearchServiceStartEnableAndReload
+  systemd:
+    name: elasticsearch
+    daemon_reload: true
+    enabled: true
+    state: started
+
+- name: FilebeatServiceStartEnableAndReload
+  systemd:
+    name: filebeat
+    daemon_reload: true
+    enabled: true
+    state: started
 
 - name: KibanaServiceStartEnableAndReload
   systemd:
     name: kibana
-    daemon_reload: yes
-    enabled: yes
+    daemon_reload: true
+    enabled: true
     state: started

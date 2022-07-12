@@ -18,15 +18,3 @@
 
 - name: Including playbook to install and configure Kibana
   include_tasks: Kibana.yml
-
-
-
-
-
-
-
-
-
-
-
-
