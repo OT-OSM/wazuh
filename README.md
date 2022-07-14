@@ -51,7 +51,7 @@ An example playbook should look like this:-
   hosts: all
   become_user: root
   roles:
-   - { role: wazuh_manager }
+   - { role: opstree_devops.wazuh_manager }
 ```
 
 and for running the ansible role, we will use ansible cli.

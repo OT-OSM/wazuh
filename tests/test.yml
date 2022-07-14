@@ -5,4 +5,4 @@
   become: true
   become_user: root
   roles:
-   - {role: wazuh_manager}
+   - {role: opstree_devops.wazuh_manager}
