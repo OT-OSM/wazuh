@@ -9,4 +9,5 @@
     - instances.yml
 
 - name: Generating certificates by executing script
-  shell: "bash {{ CertificateScriptPath }}wazuh-cert-tool.sh"
+  command: "bash {{ CertificateScriptPath }}wazuh-cert-tool.sh"
+  changed_when: true

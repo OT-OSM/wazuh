@@ -4,6 +4,8 @@
 KibanaBinaryPath: /usr/share/kibana
 KibanaServerHost: 0.0.0.0
 KibanaServerPort: 443
+KibanaURLPlugin: https://packages.wazuh.com/4.x/ui/kibana/wazuh_kibana-
+KibanaPluginPath: "{{ KibanaBinaryPath }}/bin/kibana-plugin"
 
 ESPluginPath: /usr/share/elasticsearch/plugins
 ESSecurityPath: "{{ ESPluginPath }}/opendistro_security/securityconfig"
